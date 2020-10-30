@@ -12,15 +12,15 @@
 ## Exports
 #### The exported type is `InfInt32` (Infinity and Int32).
 #### Also exported
-- PosInf (prints as `+∞`) _+\infty_
-- NegInf (prints as `-∞`) _-\infty_
-- Indet  (prints as `¿?`) _\questiondown?_
+- PosInf (prints as `+∞`)
+- NegInf (prints as `-∞`)
+- ZerInf (prints as `¿?`) _indeterminate_ or _undefined_
 
 
 This type works as if it were defined
 ```
-# `Undefined` is the result of e.g. `PosInfinity * Zero` or `div(Zero, Zero`).
-@enum KindOfNum SignedInt PosInfinity NegInfinity Undefined
+# `ZerInf` is the result of e.g. `PosInf * 0` or `div(0, 0)`.
+@enum KindOfNum SignedInt PosInfinity NegInfinity Indeterminate
 
 struct InfInt <: Signed
     kind::KindOfNum
@@ -28,6 +28,11 @@ struct InfInt <: Signed
 end
 ```
 While the actual implementation uses a different approach, it is useful to think of this as described.
+> Internally, each _Inf+Int32_ value is a struct with supertype `Signed`.
+> The actual values are stored as `Float64s`
+     - this simplifies the development of the code from the design
+     - performance is improved by limiting finite numbers to the `Int32s`.
+     - 
 
 ## Supported operations
 
