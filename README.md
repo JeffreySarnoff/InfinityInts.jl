@@ -12,9 +12,9 @@
 ## Exports
 #### The exported type is `InfInt32` (Infinity and Int32).
 #### Also exported
-- PosInf (prints as `+∞`)
-- NegInf (prints as `-∞`)
-- ZerInf (prints as `¿?`) _indeterminate_ or _undefined_
+- `PosInf` (prints as `+∞`)
+- `NegInf` (prints as `-∞`)
+- `ZerInf` (prints as `¿?`) _indeterminate_ or _undefined_
 
 
 This type works as if it were defined
