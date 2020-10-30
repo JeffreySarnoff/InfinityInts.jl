@@ -5,7 +5,7 @@ export InfInt, PosInf, NegInf
 const FloatInt32min = Float64(typemin(Int32))
 const FloatInt32max = Float64(typemax(Int32))
 
-struct InfInt
+struct InfInt <: Signed
     val::Float64
     
     function InfInt(x::Int32)
@@ -67,6 +67,14 @@ for F in (:(|), :(&), :(xor))
   end
 end
 
+for F in (:(<<), :(>>), :(>>>))
+  @eval begin
+    Base.$F(x::InfInt, y::InfInt) = InfInt($F(Int32(x), Int32(y))) 
+    Base.$F(x::InfInt, y::S) where {S<:Signed} = InfInt($F(Int32(x), Int32(y)))
+    Base.$F(x::S, y::InfInt) where {S<:Signed} = InfInt($F(Int32(x), Int32(y)))
+  end
+end
+        
 for F in (:(==), :(!=), :(<=), :(>=), :(<), :(>))
   @eval begin
     Base.$F(x::InfInt, y::InfInt) = $F(x.val, y.val) 
