@@ -67,7 +67,7 @@ end
 
 function Base.div(x::InfInt, y::InfInt)
     x === 0 && y === 0 && throw(ErrorException("integer division error: div(0,0)"))
-    isinf(x) && isinf(y) && throw(ErrorException("integer division error: div(Inf,Inf)"))
+    isinf(x) && isinf(y) && throw(ErrorException("integer division error: div(±Inf,±Inf)"))
     iszero(x) && return ZerInf
     if isinf(x)
         signbit(x.value) === signbit(y.value) ? x : -x
