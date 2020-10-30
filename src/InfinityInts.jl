@@ -22,13 +22,16 @@ struct InfInt
     end
 end
 
+const PosInf = InfInt(Inf)
+const NegInf = InfInt(-Inf)
+
 InfInt(x::T) where {T<:Signed} = InfInt(Int32(x))
 
 @inline function Base.Int32(x::InfInt)
     if FloatInt32min <= x.val <= FloatInt32max
         Int32(x.val)
     elseif !isnan(x.val)
-        signbit(x.val) ? typemax(Int32) : typemin(Int32
+        signbit(x.val) ? typemax(Int32) : typemin(Int32)
     else
         throw(ErrorException("NaN"))
     end
@@ -44,7 +47,7 @@ for I in (:Int8, :Int16, :Int64, :Int128)
   end
 end
 
-Base.(~)(x::InfInt) = InfInt(~Int32(x))
+Base.:(~)(x::InfInt) = InfInt(~Int32(x))
 
 for F in (:(|), :(&), :(xor))
   @eval begin
