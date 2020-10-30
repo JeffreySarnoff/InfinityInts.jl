@@ -12,10 +12,10 @@ f = InfInt(0)
 @test a != b
 @test a !== b
 
-@test a <= b
-@test a < b
-@test d >= e
-@test d > e
+@test a >= b
+@test a > b
+@test b <= c
+@test b < c
 
 @test b + b == a
 @test a - b === b
