@@ -14,7 +14,7 @@
 #### Also exported
 - `PosInf` (prints as `+∞`)
 - `NegInf` (prints as `-∞`)
-- `ZerInf` (prints as `¿?`) _indeterminate_ or _undefined_
+- `Indet`  (prints as `¿?`) _indeterminate_ or _undefined_
 
 
 This type works as if it were defined
@@ -51,6 +51,8 @@ While the actual implementation uses a different approach, it is useful to think
 ## Type Coverage
 
 - Provides all `Int32` values and signed infinity:`PosInf`, `NegInf`.
+- May generate the indeterminate value `Indet`
+    - `z = zero(InfInt); div(z,z) # prints ¿?`
 - Interoperates with `Int8`, `Int16`, `Int64`, `Int128` (using `Int32(x)`)
 
 ----
