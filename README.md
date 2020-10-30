@@ -9,7 +9,13 @@
 
 ---
 
-The exported type is `InfInt32` aliased as `InfInt` (Infinity and Integer, `IntInf` Integer with Infinity).
+## Exports
+#### The exported type is `InfInt32` (Infinity and Int32).
+#### Also exported
+- PosInf (prints as `+∞`) _+\infty_
+- NegInf (prints as `-∞`) _-\infty_
+- Indet  (prints as `¿?`) _\questiondown?_
+
 
 This type works as if it were defined
 ```
@@ -25,6 +31,7 @@ While the actual implementation uses a different approach, it is useful to think
 
 ## Supported operations
 
+- Predicates: `iseven`, `isodd`, `isinf`, `isnan`, `isfinite`, `iszero`, `isone`
 - Comparisons: `==`, `!=`, `<`, `<=`, `>=`, `>`, `isless`, `isequal`, `cmp`
 - Arithmetic:  `+`, `-`, `*`, `div`, `rem` `fld`, `mod`, `cld`, `^`, `factorial`
 - Bit Operations: `~`, `|`, `&`, `⊻`, `<<`, `>>`, `>>>`, `count_zeros`, `count_ones`
