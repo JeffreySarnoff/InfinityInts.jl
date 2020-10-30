@@ -14,7 +14,7 @@
 #### Also exported
 - `PosInf` (prints as `+∞`)
 - `NegInf` (prints as `-∞`)
-- `Indet`  (prints as `¿?`) _indeterminate_ or _undefined_
+- `Indet`  (prints as `±∞`) _indeterminate_ or _undefined_
 
 
 This type works as if it were defined
