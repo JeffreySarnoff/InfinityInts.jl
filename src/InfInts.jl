@@ -20,6 +20,21 @@ Base.isinf(x::InfInt) = x.value === PosInf64 || x.value === NegInf64
 Base.iszero(x::InfInt) = iszero(x.value)
 Base.isone(x::InfInt) = iszero(x.value)
 
+function Base.:(-)(x::InfInt)
+    if isinf(x)
+        signbit(x.value) ? PosInf : NegInf
+    else
+        InfInt(-x.value)
+    end
+end
+
+function Base.abs(x::InfInt)
+    if isinf(x)
+        PosInf
+    else
+        signbit(x.value) ? InfInt(-x.value) : x
+    end
+end
 function Base.:(*)(x::InfInt, y::InfInt)
     res, ovf = mul_with_overflow(x.value, y.value)
     if ovf
