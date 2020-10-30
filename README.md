@@ -28,20 +28,24 @@ struct InfInt <: Signed
 end
 ```
 While the actual implementation uses a different approach, it is useful to think of this as described.
-> Internally, each _Inf+Int32_ value is a struct with supertype `Signed`.
-> The actual values are stored as `Float64s`
+- Internally, each _Inf+Int32_ value is a struct with supertype `Signed`.
+- The actual values are stored as `Float64s`
      - this simplifies the development of the code from the design
      - performance is improved by limiting finite numbers to the `Int32s`.
-     - 
-
+     - arithmetic with Float64(::Int32) values is representationally safe
+     - `^` requires work to determine the sign for saturating magnitudes
+     
 ## Supported operations
 
+- ArithOps:  `+`, `-`, `*`, `div`, `rem` `fld`, `mod`, `cld`, `^`, `factorial`
+- Numerics: `signbit`, `sign`, `abs`, `abs2`, `copysign`, `flipsign`                      
+
+- Comparison: `==`, `!=`, `<`, `<=`, `>=`, `>`, `isless`, `isequal
 - Predicates: `iseven`, `isodd`, `isinf`, `isnan`, `isfinite`, `iszero`, `isone`
-- Comparisons: `==`, `!=`, `<`, `<=`, `>=`, `>`, `isless`, `isequal`, `cmp`
-- Arithmetic:  `+`, `-`, `*`, `div`, `rem` `fld`, `mod`, `cld`, `^`, `factorial`
+
 - Bit Operations: `~`, `|`, `&`, `⊻`, `<<`, `>>`, `>>>`, `count_zeros`, `count_ones`
-- Bit Patterns: `leading_zeros`, `trailing_zeros`, `leading_ones`, `trailing_ones`
-- Low Level Functions: `signbit`, `sign`, `abs`, `abs2`, `copysign`, `flipsign`                      
+- Binary Layouts: `leading_zeros`, `trailing_zeros`, `leading_ones`, `trailing_ones`
+
 - Low Level Operations: `hash`, `show`
 
 ## Type Coverage
