@@ -47,6 +47,16 @@ for I in (:Int8, :Int16, :Int64, :Int128)
   end
 end
 
+Base.isnan(x::InfInt) = isnan(x.val)
+Base.isinf(x::InfInt) = isinf(x.val)
+Base.isfinite(x::InfInt) = isfinite(x.val)
+
+Base.:iseven(x::InfInt) = isfinite(x.val) && iseven(Int32(x.val))
+Base.:isodd(x::InfInt) = isfinite(x.val) && isodd(Int32(x.val))
+
+Base.signbit(x::InfInt) = signbit(x.val)
+Base.sign(x::InfInt) = Int32(sign(x.val))
+
 Base.:(~)(x::InfInt) = InfInt(~Int32(x))
 
 for F in (:(|), :(&), :(xor))
@@ -71,6 +81,16 @@ for F in (:(+), :(-), :(*), :(mod), :(rem), :(div), :(fld), :(cld))
     Base.$F(x::InfInt, y::S) where {S<:Signed} = InfInt($F(x.val, Float64(y)))
     Base.$F(x::S, y::InfInt) where {S<:Signed} = InfInt($F(Float64(x), y.val))    
   end
+end
+
+function Base.:(^)(x::InfInt, y::InfInt)
+    xy = x.val^y.val
+    if isodd(y) && signbit(x)
+        xy = -abs(xy)
+    else
+        xy = abs(xy)
+    end
+    return InfInt(xy)
 end
 
 Base.hash(x::InfInt, u::UInt64) = hash(x.val, u)
