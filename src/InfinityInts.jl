@@ -24,6 +24,8 @@ end
 
 const PosInf = InfInt(Inf)
 const NegInf = InfInt(-Inf)
+const InfInt0 = InfInt(0.0) 
+const InfInt1 = InfInt(1.0)
 
 InfInt(x::T) where {T<:Signed} = InfInt(Int32(x))
 
@@ -47,6 +49,8 @@ for I in (:Int8, :Int16, :Int64, :Int128)
   end
 end
 
+Base.hash(x::InfInt, u::UInt64) = hash(x.val, u)
+
 Base.isnan(x::InfInt) = isnan(x.val)
 Base.isinf(x::InfInt) = isinf(x.val)
 Base.isfinite(x::InfInt) = isfinite(x.val)
@@ -56,6 +60,31 @@ Base.:isodd(x::InfInt) = isfinite(x.val) && isodd(Int32(x.val))
 
 Base.signbit(x::InfInt) = signbit(x.val)
 Base.sign(x::InfInt) = Int32(sign(x.val))
+
+Base.zero(::Type{InfInt}) = InfInt0
+Base.one(::Type{InfInt}) = InfInt1
+Base.iszero(x::InfInt) = x.val === 0.0
+Base.isone(x::InfInt) = x.val === 1.0
+
+Base.:(-)(x::InfInt) = InfInt(-x.val)
+Base.:(abs)(x::InfInt) = InfInt(abs(x.val))
+Base.:(abs2)(x::InfInt) = InfInt(abs2(x.val))
+
+Base.copysign(x::InfInt, y::InfInt) = signbit(x.val) === signbit(y.val) ? x : -x
+Base.flipsign(x::InfInt, y::InfInt) = signbit(y.val) ? -x : x
+
+for F in (:leading_zeros, :leading_ones, :trailing_zeros, :trailing_ones,
+          :count_zeros, :count_ones,
+          :factorial)
+  @eval begin
+    @inline function Base.$F(x::InfInt)
+      if isfinite(x.val)
+        $F(Int32(x.val))
+      else
+        throw(ErrorException("nonfinite"))
+      end
+   end         
+end
 
 Base.:(~)(x::InfInt) = InfInt(~Int32(x))
 
@@ -101,14 +130,7 @@ function Base.:(^)(x::InfInt, y::InfInt)
     return InfInt(xy)
 end
 
-Base.hash(x::InfInt, u::UInt64) = hash(x.val, u)
 
-Base.:(-)(x::InfInt) = InfInt(-x.val)
-Base.:(abs)(x::InfInt) = InfInt(abs(x.val))
-Base.:(abs2)(x::InfInt) = InfInt(abs2(x.val))
-
-Base.copysign(x::InfInt, y::InfInt) = signbit(x.val) === signbit(y.val) ? x : -x
-Base.flipsign(x::InfInt, y::InfInt) = signbit(y.val) ? -x : x
 
 function Base.show(io::IO, x::InfInt)
     if isnan(x.val)
