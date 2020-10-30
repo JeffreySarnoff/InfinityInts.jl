@@ -24,7 +24,7 @@ end
 
 const PosInf = InfInt(Inf);  const PosInfStr = "+∞";
 const NegInf = InfInt(-Inf); const NegInfStr = "-∞";
-const Indet  = InfInt(NaN);  const IndetStr  = "¿?";
+const Indet  = InfInt(NaN);  const IndetStr  = "±∞";
 
 const InfInt0 = InfInt(0.0); 
 const InfInt1 = InfInt(1.0);
