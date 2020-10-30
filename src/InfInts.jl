@@ -64,12 +64,22 @@ function Base.:(*)(x::Int64, y::InfInt)
 end
 
 function Base.:(+)(x::InfInt, y::InfInt)
-    res, ovf = add_with_overflow(x.value, y.value)
-    if ovf # both signbits match
-        signbit(x.value) ? NegInf : PosInf
-    else
-        InfInt(res)
-    end
+    if isinf(x)
+        if isinf(y)
+            signbit(x.value) === signbit(y.value) ? x : throw(ErrorException,"arithmetic error Inf-Inf")
+        else
+            x
+        end
+    elseif isinf(y)
+        y
+    else    
+        res, ovf = add_with_overflow(x.value, y.value)
+        if ovf # both signbits match
+            signbit(x.value) ? NegInf : PosInf
+        else
+            InfInt(res)
+        end
+    end    
 end
 
 function Base.:(-)(x::InfInt, y::InfInt)
