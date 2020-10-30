@@ -51,6 +51,12 @@ for I in (:Int8, :Int16, :Int64, :Int128)
   end
 end
 
+for T in (:Int8, :Int16, :Int32, :Int64, :Int128)
+  @eval Base.promote_rule(::Type{InfInt}, ::Type{$T}) = InfInt
+  @eval Base.convert(::Type{InfInt}, x::$T) = InfInt(Int32(x))
+  @eval Base.convert(::Type{$T}, x::InfInt) = $T(Int32(x))
+end
+
 Base.hash(x::InfInt, u::UInt64) = hash(x.val, u)
 
 function Base.show(io::IO, x::InfInt)
@@ -142,12 +148,6 @@ function Base.:(^)(x::InfInt, y::InfInt)
         xy = abs(xy)
     end
     return InfInt(xy)
-end
-
-for T in (:Int8, :Int16, :Int32, :Int64, :Int128)
-  @eval Base.promote_rule(::Type{InfInt}, ::Type{$T}) = InfInt
-  @eval Base.convert(::Type{InfInt}, x::$T) = InfInt(Int32(x))
-  @eval Base.convert(::Type{$T}, x::InfInt) = $T(Int32(x))
 end
 
 end  # InfinityInts
