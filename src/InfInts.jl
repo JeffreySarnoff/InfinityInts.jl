@@ -35,6 +35,7 @@ function Base.abs(x::InfInt)
         signbit(x.value) ? InfInt(-x.value) : x
     end
 end
+
 function Base.:(*)(x::InfInt, y::InfInt)
     res, ovf = mul_with_overflow(x.value, y.value)
     if ovf
