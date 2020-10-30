@@ -66,7 +66,7 @@ end
 function Base.:(+)(x::InfInt, y::InfInt)
     if isinf(x)
         if isinf(y)
-            signbit(x.value) === signbit(y.value) ? x : throw(ErrorException,"arithmetic error Inf-Inf")
+            signbit(x.value) === signbit(y.value) ? x : throw(ErrorException("arithmetic error Inf-Inf"))
         else
             x
         end
