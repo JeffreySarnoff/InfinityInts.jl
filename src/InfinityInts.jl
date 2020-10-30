@@ -144,4 +144,10 @@ function Base.:(^)(x::InfInt, y::InfInt)
     return InfInt(xy)
 end
 
+for T in (:Int8, :Int16, :Int32, :Int64, :Int128)
+  @eval Base.promote_rule(::Type{InfInt}, ::Type{$T}) = InfInt
+  @eval Base.convert(::Type{InfInt}, x::$T) = InfInt(Int32(x))
+  @eval Base.convert(::Type{$T}, x::InfInt) = $T(Int32(x))
+end
+
 end  # InfinityInts
