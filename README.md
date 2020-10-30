@@ -51,6 +51,6 @@ While the actual implementation uses a different approach, it is useful to think
 ## Type Coverage
 
 - Provides all `Int32` values and signed infinity:`PosInf`, `NegInf`.
-- Interoperates with `Int8`, `Int16`, `Int32`, `Int64`, `Int128`
+- Interoperates with `Int8`, `Int16`, `Int64`, `Int128` (using `Int32(x)`)
 
 ----
