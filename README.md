@@ -32,4 +32,9 @@ While the actual implementation uses a different approach, it is useful to think
 - Low Level Functions: `signbit`, `sign`, `abs`, `abs2`, `copysign`, `flipsign`                      
 - Low Level Operations: `hash`, `show`
 
+## Type Coverage
+
+- Provides all `Int32` values and signed infinity:`PosInf`, `NegInf`.
+- Interoperates with `Int8`, `Int16`, `Int32`, `Int64`, `Int128`
+
 ----
