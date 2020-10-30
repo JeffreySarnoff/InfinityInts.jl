@@ -55,7 +55,7 @@ Base.hash(x::InfInt, u::UInt64) = hash(x.val, u)
 
 function Base.show(io::IO, x::InfInt)
     if isnan(x.val)
-        str = ZerInfStr
+        str = IndetStr
     elseif isinf(x.val)
         str = signbit(x.val) ? NegInfStr : PosInfStr
     else
