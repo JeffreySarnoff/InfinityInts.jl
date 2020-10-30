@@ -2,8 +2,8 @@ module InfinityInts
 
 export InfInt, PosInf, NegInf
 
-const FloatInt32min = Float64(typemin(Int32))
-const FloatInt32max = Float64(typemax(Int32))
+const FloatInt32min = Float64(typemin(Int32));
+const FloatInt32max = Float64(typemax(Int32));
 
 struct InfInt <: Signed
     val::Float64
@@ -22,10 +22,10 @@ struct InfInt <: Signed
     end
 end
 
-const PosInf = InfInt(Inf)
-const NegInf = InfInt(-Inf)
-const InfInt0 = InfInt(0.0) 
-const InfInt1 = InfInt(1.0)
+const PosInf = InfInt(Inf);
+const NegInf = InfInt(-Inf);
+const InfInt0 = InfInt(0.0); 
+const InfInt1 = InfInt(1.0);
 
 InfInt(x::T) where {T<:Signed} = InfInt(Int32(x))
 
@@ -50,6 +50,17 @@ for I in (:Int8, :Int16, :Int64, :Int128)
 end
 
 Base.hash(x::InfInt, u::UInt64) = hash(x.val, u)
+
+function Base.show(io::IO, x::InfInt)
+    if isnan(x.val)
+        str = "NaN"
+    elseif isinf(x.val)
+        str = signbit(x.val) ? "-Inf" : "+Inf"
+    else
+        str = string(Int32(x))
+    end
+    print(io, str)
+end
 
 Base.isnan(x::InfInt) = isnan(x.val)
 Base.isinf(x::InfInt) = isinf(x.val)
@@ -76,14 +87,15 @@ Base.flipsign(x::InfInt, y::InfInt) = signbit(y.val) ? -x : x
 for F in (:leading_zeros, :leading_ones, :trailing_zeros, :trailing_ones,
           :count_zeros, :count_ones,
           :factorial)
-  @eval begin
-    @inline function Base.$F(x::InfInt)
-      if isfinite(x.val)
-        $F(Int32(x.val))
-      else
-        throw(ErrorException("nonfinite"))
-      end
-   end         
+   @eval begin
+     @inline function Base.$F(x::InfInt)
+       if isfinite(x.val)
+         $F(Int32(x.val))
+       else
+         throw(ErrorException("nonfinite"))
+       end
+    end
+  end
 end
 
 Base.:(~)(x::InfInt) = InfInt(~Int32(x))
@@ -103,7 +115,7 @@ for F in (:(<<), :(>>), :(>>>))
     Base.$F(x::S, y::InfInt) where {S<:Signed} = InfInt($F(Int32(x), Int32(y)))
   end
 end
-        
+
 for F in (:(==), :(!=), :(<=), :(>=), :(<), :(>))
   @eval begin
     Base.$F(x::InfInt, y::InfInt) = $F(x.val, y.val) 
@@ -128,19 +140,6 @@ function Base.:(^)(x::InfInt, y::InfInt)
         xy = abs(xy)
     end
     return InfInt(xy)
-end
-
-
-
-function Base.show(io::IO, x::InfInt)
-    if isnan(x.val)
-        str = "NaN"
-    elseif isinf(x.val)
-        str = signbit(x.val) ? "-Inf" : "+Inf"
-    else
-        str = string(Int32(x))
-    end
-    print(io, str)
 end
 
 end  # InfinityInts
