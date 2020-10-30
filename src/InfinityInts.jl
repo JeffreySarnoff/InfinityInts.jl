@@ -1,6 +1,6 @@
 module InfinityInts
 
-export InfInt, PosInf, NegInf
+export InfInt, PosInf, NegInf, Indet
 
 const FloatInt32min = Float64(typemin(Int32));
 const FloatInt32max = Float64(typemax(Int32));
@@ -22,8 +22,10 @@ struct InfInt <: Signed
     end
 end
 
-const PosInf = InfInt(Inf);
-const NegInf = InfInt(-Inf);
+const PosInf = InfInt(Inf);  const PosInfStr = "+∞";
+const NegInf = InfInt(-Inf); const NegInfStr = "-∞";
+const ZerInf = InfInt(NaN);  const ZerInfStr = "¿?";
+
 const InfInt0 = InfInt(0.0); 
 const InfInt1 = InfInt(1.0);
 
@@ -53,9 +55,9 @@ Base.hash(x::InfInt, u::UInt64) = hash(x.val, u)
 
 function Base.show(io::IO, x::InfInt)
     if isnan(x.val)
-        str = "NaN"
+        str = ZerInfStr
     elseif isinf(x.val)
-        str = signbit(x.val) ? "-Inf" : "+Inf"
+        str = signbit(x.val) ? NegInfStr : PosInfStr
     else
         str = string(Int32(x))
     end
@@ -100,7 +102,7 @@ end
 
 Base.:(~)(x::InfInt) = InfInt(~Int32(x))
 
-for F in (:(|), :(&), :(xor))
+for F in (:(|), :(&), :(⊻))
   @eval begin
     Base.$F(x::InfInt, y::InfInt) = InfInt($F(Int32(x), Int32(y))) 
     Base.$F(x::InfInt, y::S) where {S<:Signed} = InfInt($F(Int32(x), Int32(y)))
@@ -116,7 +118,7 @@ for F in (:(<<), :(>>), :(>>>))
   end
 end
 
-for F in (:(==), :(!=), :(<=), :(>=), :(<), :(>))
+for F in (:(==), :(!=), :(<=), :(>=), :(<), :(>), :isless, :isequal)
   @eval begin
     Base.$F(x::InfInt, y::InfInt) = $F(x.val, y.val) 
     Base.$F(x::InfInt, y::S) where {S<:Signed} = $F(x.val, Float64(y))
