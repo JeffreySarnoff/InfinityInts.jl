@@ -1,6 +1,6 @@
 module InfinityInts
 
-export InfInt
+export InfInt, PosInf, NegInf
 
 const FloatInt32min = Float64(typemin(Int32))
 const FloatInt32max = Float64(typemax(Int32))
@@ -57,7 +57,6 @@ for F in (:(|), :(&), :(xor))
   end
 end
 
-
 for F in (:(==), :(!=), :(<=), :(>=), :(<), :(>))
   @eval begin
     Base.$F(x::InfInt, y::InfInt) = $F(x.val, y.val) 
@@ -74,10 +73,7 @@ for F in (:(+), :(-), :(*), :(mod), :(rem), :(div), :(fld), :(cld))
   end
 end
 
-
-
 Base.hash(x::InfInt, u::UInt64) = hash(x.val, u)
-
 
 Base.:(-)(x::InfInt) = InfInt(-x.val)
 Base.:(abs)(x::InfInt) = InfInt(abs(x.val))
@@ -96,8 +92,5 @@ function Base.show(io::IO, x::InfInt)
     end
     print(io, str)
 end
-
-
-
 
 end  # InfinityInts
