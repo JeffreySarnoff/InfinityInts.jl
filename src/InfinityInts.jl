@@ -1,6 +1,7 @@
 module InfinityInts
 
-export InfInt, PosInf, NegInf, Indet
+export InfInt, PosInf, NegInf, Indet,
+       Top, ⊤, Bot, ⊥, Bottom
 
 const FloatInt32min = Float64(typemin(Int32));
 const FloatInt32max = Float64(typemax(Int32));
@@ -25,6 +26,10 @@ end
 const PosInf = InfInt(Inf);  const PosInfStr = "+∞";
 const NegInf = InfInt(-Inf); const NegInfStr = "-∞";
 const Indet  = InfInt(NaN);  const IndetStr  = "±∞";
+
+const Top = InfInt(Inf); const TopStr = "⊤";
+const Bot = InfInt(-Inf); const BotStr = "⊥";
+const Bottom = InfInt(-Inf); const BottomStr = "⊥";
 
 const InfInt0 = InfInt(0.0); 
 const InfInt1 = InfInt(1.0);
