@@ -1,6 +1,6 @@
 # InfinityInts.jl
 
-#### Copyright © 2020 by Jeffrey Sarnoff.
+#### Copyright © 2020-2023 by Jeffrey Sarnoff.
 ####  This work is released under The MIT License.
 
 ----
