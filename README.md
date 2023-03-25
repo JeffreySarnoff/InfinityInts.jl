@@ -5,7 +5,10 @@
 
 ----
 
-### Arithmetic with the `InfInt` type saturates ±Infinty, so there is no overflow or underflow.
+#### Arithmetic with the `InfInt` type saturates ±Infinty, so there is no overflow or underflow.
+#### Supports Unified Algebra constants Top (⊤ \top) and Bottom (⊥ \bot) (or Bot)
+- [Unified Algebra](https://www.cs.utoronto.ca/~hehner/UA.pdf)
+- [From Boolean Algebra To Unified Algebra](http://www.cs.toronto.edu/~hehner/BAUA.pdf)
 
 ---
 
